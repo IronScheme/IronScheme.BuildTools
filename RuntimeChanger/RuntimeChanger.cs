@@ -15,11 +15,6 @@ var current = FindRuntime(ass);
 /*
  * mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089
  * mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089
- * System.Runtime, Version=4.2.1.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a // netcoreapp2.1
- * System.Runtime, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a // net5.0
- * System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a // net6.0
- * System.Runtime, Version=8.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a // net8.0
- * System.Runtime, Version=9.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a // net9.0 c#
  * System.Private.CoreLib, Version=9.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e // net9.0 RE
  */
 

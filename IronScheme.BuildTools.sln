@@ -13,7 +13,15 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TailCallMaker", "TailCallMa
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{04D71FDD-0DBF-4AAF-9929-8F48BFC6AB16}"
 	ProjectSection(SolutionItems) = preProject
+		Directory.Build.props = Directory.Build.props
+		Directory.Build.targets = Directory.Build.targets
 		README.md = README.md
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "msbuild", "msbuild", "{24C00C58-AF32-404F-B44E-9EE207318BE8}"
+	ProjectSection(SolutionItems) = preProject
+		msbuild\Ironscheme.Build.props = msbuild\Ironscheme.Build.props
+		msbuild\Ironscheme.Build.targets = msbuild\Ironscheme.Build.targets
 	EndProjectSection
 EndProject
 Global

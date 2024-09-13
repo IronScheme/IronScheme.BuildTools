@@ -1,0 +1,7 @@
+<Project>
+  <PropertyGroup>
+    <PlatformTarget>anycpu</PlatformTarget>
+    <OutDir Condition="$(Configuration) == 'Release'">../bin/</OutDir>
+    <UseCurrentRuntimeIdentifier>true</UseCurrentRuntimeIdentifier>
+  </PropertyGroup>
+</Project>

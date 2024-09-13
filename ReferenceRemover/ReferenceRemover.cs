@@ -7,7 +7,8 @@ if (args.Length == 0)
     return 1;
 }
 
-var ass = AssemblyDefinition.ReadAssembly(args[0], new ReaderParameters { ReadSymbols = true });
+var hasPdb = File.Exists(Path.ChangeExtension(args[0], "pdb"));
+var ass = AssemblyDefinition.ReadAssembly(args[0], new ReaderParameters { ReadSymbols = hasPdb, InMemory = true });
 
 if (args.Length == 1)
 {
@@ -40,6 +41,6 @@ foreach (var r in ass.MainModule.AssemblyReferences)
 }
 
 Console.WriteLine("Saving assembly: {0}", args[0]);
-ass.Write(args[0], new WriterParameters { WriteSymbols = true });
+ass.Write(args[0], new WriterParameters { WriteSymbols = hasPdb });
 
 return 0;

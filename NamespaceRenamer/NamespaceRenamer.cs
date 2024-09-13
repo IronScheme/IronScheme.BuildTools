@@ -1,7 +1,7 @@
 ﻿using Mono.Cecil;
 using System.Text.RegularExpressions;
 
-bool refs = false;
+var refs = false;
 if (args.Contains("-r"))
 {
     refs = true;
@@ -9,11 +9,11 @@ if (args.Contains("-r"))
 }
 
 var assname = args[0];
-string snk = Directory.GetFiles(Path.GetDirectoryName(Path.GetFullPath(assname)), "*.snk").FirstOrDefault();
+var snk = Directory.GetFiles(Path.GetDirectoryName(Path.GetFullPath(assname)), "*.snk").FirstOrDefault();
 var renames = new List<Transform>();
 var except = new List<string>();
 
-for (int i = 1; i < args.Length; i++)
+for (var i = 1; i < args.Length; i++)
 {
     var m = Transform.tx.Match(args[i]);
     if (m.Success)
@@ -30,8 +30,8 @@ for (int i = 1; i < args.Length; i++)
     }
 }
 
-var ass = AssemblyDefinition.ReadAssembly(assname, new ReaderParameters { ReadSymbols = true, });
-
+var hasPdb = File.Exists(Path.ChangeExtension(assname, "pdb"));
+var ass = AssemblyDefinition.ReadAssembly(assname, new ReaderParameters { ReadSymbols = hasPdb, InMemory = true});
 
 if (!refs)
 {
@@ -78,14 +78,12 @@ Console.WriteLine("Saving assembly: {0}", assname);
 
 if (!refs && snk != null)
 {
-    using (var sn = File.OpenRead(snk))
-    {
-        ass.Write(assname, new WriterParameters { StrongNameKeyPair = new System.Reflection.StrongNameKeyPair(sn), WriteSymbols = true });
-    }
+    using var sn = File.OpenRead(snk);
+    ass.Write(assname, new WriterParameters { StrongNameKeyPair = new System.Reflection.StrongNameKeyPair(sn), WriteSymbols = hasPdb });
 }
 else
 {
-    ass.Write(assname, new WriterParameters { WriteSymbols = true });
+    ass.Write(assname, new WriterParameters { WriteSymbols = hasPdb });
 }
 
 class Transform

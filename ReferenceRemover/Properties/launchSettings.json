@@ -1,0 +1,9 @@
+{
+  "profiles": {
+    "ReferenceRemover": {
+      "commandName": "Project",
+      "commandLineArgs": "ironscheme.clr.dll",
+      "workingDirectory": "c:\\dev\\IronScheme\\IronScheme\\IronScheme.Console\\bin\\Release\\net9.0\\"
+    }
+  }
+}
