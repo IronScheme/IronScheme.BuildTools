@@ -1,8 +1,8 @@
 <Project>
-  <Target Name="IronSchemeBuildToolsrestore" BeforeTargets="Restore">
+  <Target Name="IronSchemeBuildToolsRestore" BeforeTargets="ResolvePackageAssets">
     <MSBuild Projects="$(MSBuildThisFileDirectory)../Setup/Setup.csproj" Properties="TargetFramework=$(IronSchemeBuildToolsTargetFramework)" Targets="Restore"></MSBuild>
   </Target>
-  <Target Name="IronSchemeBuildTools">
+  <Target Name="IronSchemeBuildTools" DependsOnTargets="IronSchemeBuildToolsRestore">
     <MSBuild Projects="$(MSBuildThisFileDirectory)../Setup/Setup.csproj" Properties="TargetFramework=$(IronSchemeBuildToolsTargetFramework)" Targets="Build"></MSBuild>
   </Target>
 </Project>
