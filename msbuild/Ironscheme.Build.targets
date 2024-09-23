@@ -1,4 +1,5 @@
 <Project>
-  <PropertyGroup>
-  </PropertyGroup>
+  <Target Name="BuildTools" BeforeTargets="Restore">
+    <MSBuild Projects="$(MSBuildThisFileDirectory)../Setup/Setup.csproj" Properties="TargetFramework=net9.0" Targets="Restore;Build"></MSBuild>
+  </Target>
 </Project>
