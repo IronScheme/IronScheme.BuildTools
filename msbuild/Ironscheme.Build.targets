@@ -1,5 +1,8 @@
 <Project>
+  <Target Name="IronSchemeBuildToolsrestore" BeforeTargets="Restore">
+    <MSBuild Projects="$(MSBuildThisFileDirectory)../Setup/Setup.csproj" Properties="TargetFramework=$(IronSchemeBuildToolsTargetFramework)" Targets="Restore"></MSBuild>
+  </Target>
   <Target Name="IronSchemeBuildTools">
-    <MSBuild Projects="$(MSBuildThisFileDirectory)../Setup/Setup.csproj" Properties="TargetFramework=$(IronSchemeBuildToolsTargetFramework)" Targets="Restore;Build"></MSBuild>
+    <MSBuild Projects="$(MSBuildThisFileDirectory)../Setup/Setup.csproj" Properties="TargetFramework=$(IronSchemeBuildToolsTargetFramework)" Targets="Build"></MSBuild>
   </Target>
 </Project>
