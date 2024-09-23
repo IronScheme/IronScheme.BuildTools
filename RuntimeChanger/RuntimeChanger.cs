@@ -9,22 +9,22 @@ if (args.Length == 0)
 var v4 = false;
 bool? x86 = null;
 
-if (args.Contains("/v4"))
+if (args.Contains("/v4", StringComparer.InvariantCultureIgnoreCase))
 {
     v4 = true;
-    args = Array.FindAll(args, a => a != "/v4");
+    args = Array.FindAll(args, a => !a.Equals("/v4", StringComparison.InvariantCultureIgnoreCase));
 }
 
-if (args.Contains("/32bit+"))
+if (args.Contains("/32bit+", StringComparer.InvariantCultureIgnoreCase))
 {
     x86 = true;
-    args = Array.FindAll(args, a => a != "/32bit+");
+    args = Array.FindAll(args, a => !a.Equals("/32bit+", StringComparison.InvariantCultureIgnoreCase));
 }
 
-if (args.Contains("/32bit-"))
+if (args.Contains("/32bit-", StringComparer.InvariantCultureIgnoreCase))
 {
     x86 = false;
-    args = Array.FindAll(args, a => a != "/32bit-");
+    args = Array.FindAll(args, a => !a.Equals("/32bit-", StringComparison.InvariantCultureIgnoreCase));
 }
 
 var hasPdb = File.Exists(Path.ChangeExtension(args[0], "pdb"));

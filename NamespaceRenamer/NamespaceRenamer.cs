@@ -8,10 +8,10 @@ if (args.Length == 0)
 }
 
 var refs = false;
-if (args.Contains("-r"))
+if (args.Contains("-r", StringComparer.InvariantCultureIgnoreCase))
 {
     refs = true;
-    args = Array.FindAll(args, x => x != "-r");
+    args = Array.FindAll(args, x => !x.Equals("-r", StringComparison.InvariantCultureIgnoreCase));
 }
 
 var tx = new Regex("^(?<src>.+)=(?<tgt>.+)$", RegexOptions.Compiled);
