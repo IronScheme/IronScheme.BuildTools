@@ -1,6 +1,12 @@
 ﻿using Mono.Cecil;
 using System.Text.RegularExpressions;
 
+if (args.Length == 0)
+{
+    Console.WriteLine("Usage: NamespaceRenamer [-r] assembly (src=tgt)+ ");
+    return 1;
+}
+
 var refs = false;
 if (args.Contains("-r"))
 {
@@ -11,7 +17,6 @@ if (args.Contains("-r"))
 var tx = new Regex("^(?<src>.+)=(?<tgt>.+)$", RegexOptions.Compiled);
 
 var assname = args[0];
-var snk = Directory.GetFiles(Path.GetDirectoryName(Path.GetFullPath(assname)), "*.snk").FirstOrDefault();
 
 var renames = new List<Transform>();
 var except = new List<string>();
@@ -48,16 +53,9 @@ else
 }
 
 Console.WriteLine("Saving assembly: {0}", assname);
+ass.Write(assname, new WriterParameters { WriteSymbols = hasPdb });
 
-if (!refs && snk != null)
-{
-    using var sn = File.OpenRead(snk);
-    ass.Write(assname, new WriterParameters { StrongNameKeyPair = new System.Reflection.StrongNameKeyPair(sn), WriteSymbols = hasPdb });
-}
-else
-{
-    ass.Write(assname, new WriterParameters { WriteSymbols = hasPdb });
-}
+return 0;
 
 void Rename(IEnumerable<TypeReference> types)
 {

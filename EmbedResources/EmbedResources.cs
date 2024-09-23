@@ -2,7 +2,7 @@
 
 if (args.Length == 0)
 {
-    Console.WriteLine("EmbedResources Assembly (file[,name])+");
+    Console.WriteLine("Usage: EmbedResources Assembly (file[,name])+");
     return 1;
 }
 
@@ -16,6 +16,7 @@ foreach (var embed in args.Skip(1))
     var file = parts[0];
     var name = parts.Length > 1 ? parts[1] : Path.GetFileName(file);
 
+    Console.WriteLine("Embedding resource: {0} as {1}", file, name);
     resources.Add(new EmbeddedResource(name, ManifestResourceAttributes.Public, File.OpenRead(file)));
 }
 

@@ -2,7 +2,7 @@
 
 if (args.Length == 0)
 {
-    Console.WriteLine("RuntimeChanger [/v4] [/32bit+|/32bit-] Assembly");
+    Console.WriteLine("Usage: RuntimeChanger [/v4] [/32bit+|/32bit-] Assembly");
     return 1;
 }
 

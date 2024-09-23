@@ -3,7 +3,7 @@ using Mono.Cecil;
 
 if (args.Length == 0)
 {
-    Console.WriteLine("RemoveReferences Assembly [Regex [ExcludeRegex] Target]");
+    Console.WriteLine("Usage: RemoveReferences Assembly [Regex [ExcludeRegex] Target]");
     return 1;
 }
 
