@@ -1,5 +1,6 @@
 <Project>
   <PropertyGroup>
-    <BuildToolsPath>$(MSBuildThisFileDirectory)../bin/</BuildToolsPath>
+    <IronSchemeBuildToolsTargetFramework Condition="$(IronSchemeBuildToolTargetFramework) == ''">net9.0</IronSchemeBuildToolsTargetFramework>
+    <IronSchemeBuildToolsPath>$(MSBuildThisFileDirectory)../bin/</IronSchemeBuildToolsPath>
   </PropertyGroup>
 </Project>
