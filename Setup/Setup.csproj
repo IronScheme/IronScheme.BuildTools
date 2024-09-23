@@ -1,0 +1,31 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net4.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <LangVersion>12.0</LangVersion>
+    <OutDir Condition="$(Configuration) == 'Release'">../bin/</OutDir>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="$(MSBuildRuntimeType) == 'Core'">
+    <SystemRoot Condition="$(SystemRoot) == ''">C:\WINDOWS</SystemRoot>
+    <SDK40ToolsPath Condition="$(SDK40ToolsPath) == ''">$([MSBuild]::ValueOrDefault($([MSBuild]::GetRegistryValueFromView('HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Microsoft SDKs\NETFXSDK\4.8.1\WinSDK-NetFx40Tools-x86', 'InstallationFolder', null, RegistryView.Registry32)), $([MSBuild]::GetRegistryValueFromView('HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Microsoft SDKs\NETFXSDK\4.8\WinSDK-NetFx40Tools-x86', 'InstallationFolder', null, RegistryView.Registry32))))</SDK40ToolsPath>
+    <SDK35ToolsPath Condition="$(SDK35ToolsPath) == ''">$([MSBuild]::GetRegistryValueFromView('HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Microsoft SDKs\Windows\v8.0A\WinSDK-NetFx35Tools-x86', 'InstallationFolder', null, RegistryView.Registry32))</SDK35ToolsPath>
+    <MSBuildFrameworkToolsRoot Condition="'$(MSBuildFrameworkToolsRoot)' == ''">$(SystemRoot)\Microsoft.NET\Framework\</MSBuildFrameworkToolsRoot>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\EmbedResources\EmbedResources.csproj" />
+    <ProjectReference Include="..\NamespaceRenamer\NamespaceRenamer.csproj" />
+    <ProjectReference Include="..\ReferenceRemover\ReferenceRemover.csproj" />
+    <ProjectReference Include="..\RuntimeChanger\RuntimeChanger.csproj" />
+    <ProjectReference Include="..\TailCallMaker\TailCallMaker.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.NETCore.ILAsm" Version="9.0.0-*" PrivateAssets="all" />
+    <PackageReference Include="Microsoft.NETCore.ILDAsm" Version="9.0.0-*" PrivateAssets="all" />
+  </ItemGroup>
+
+</Project>

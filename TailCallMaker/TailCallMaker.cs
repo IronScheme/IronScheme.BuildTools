@@ -1,17 +1,8 @@
 ﻿var fn = args[0];
 
-var lines = new List<string>();
+var lines = File.ReadAllLines(fn);
 
-using (TextReader r = File.OpenText(fn))
-{
-    string line = null;
-    while ((line = r.ReadLine()) != null)
-    {
-        lines.Add(line);
-    }
-}
-
-for (var i = 0; i < lines.Count; i++)
+for (var i = 0; i < lines.Length; i++)
 {
     var line = lines[i];
 
@@ -19,7 +10,7 @@ for (var i = 0; i < lines.Count; i++)
 
     if (ci >= 0)
     {
-        if (line.Substring(ci + 1).Trim().StartsWith("callvirt   instance object [Microsoft.Scripting]Microsoft.Scripting.CallTarget"))
+        if (line.Substring(ci + 1).Trim().StartsWith("callvirt   instance object [IronScheme.Scripting]Microsoft.Scripting.CallTarget"))
         {
             lines[i] = line.Replace("callvirt", "call");
         }
@@ -48,10 +39,4 @@ for (var i = 0; i < lines.Count; i++)
     }
 }
 
-using (TextWriter w = File.CreateText(fn))
-{
-    foreach (var line in lines)
-    {
-        w.WriteLine(line);
-    }
-}
+File.WriteAllLines(fn, lines);

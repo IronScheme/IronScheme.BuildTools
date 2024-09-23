@@ -2,7 +2,7 @@
   "profiles": {
     "RuntimeChanger": {
         "commandName": "Project",
-        "commandLineArgs": "ironscheme.clr.helpers.dll",
+        "commandLineArgs": "IronScheme.Closures.dll",
         "workingDirectory": ""
     }
   }

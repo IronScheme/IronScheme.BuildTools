@@ -8,14 +8,17 @@ if (args.Contains("-r"))
     args = Array.FindAll(args, x => x != "-r");
 }
 
+var tx = new Regex("^(?<src>.+)=(?<tgt>.+)$", RegexOptions.Compiled);
+
 var assname = args[0];
 var snk = Directory.GetFiles(Path.GetDirectoryName(Path.GetFullPath(assname)), "*.snk").FirstOrDefault();
+
 var renames = new List<Transform>();
 var except = new List<string>();
 
-for (var i = 1; i < args.Length; i++)
+foreach (var arg in args)
 {
-    var m = Transform.tx.Match(args[i]);
+    var m = tx.Match(arg);
     if (m.Success)
     {
         renames.Add(new Transform
@@ -26,7 +29,7 @@ for (var i = 1; i < args.Length; i++)
     }
     else
     {
-        except.Add(args[i]);
+        except.Add(arg);
     }
 }
 
@@ -36,42 +39,12 @@ var ass = AssemblyDefinition.ReadAssembly(assname, new ReaderParameters { ReadSy
 if (!refs)
 {
     Console.WriteLine("Renaming namespaces in {0}", ass.FullName);
-
-    foreach (var t in ass.MainModule.Types)
-    {
-        if (!except.Contains(t.Namespace))
-        {
-            foreach (var r in renames)
-            {
-                if (t.Namespace.StartsWith(r.Source))
-                {
-                    var oldtn = t.FullName;
-                    t.Namespace = t.Namespace.Replace(r.Source, r.Target);
-                    Console.WriteLine("{0} -> {1}", oldtn, t.FullName);
-                }
-            }
-        }
-    }
+    Rename(ass.MainModule.Types);
 }
 else
 {
     Console.WriteLine("Renaming imported namespaces in {0}", ass.FullName);
-
-    foreach (var t in ass.MainModule.GetTypeReferences())
-    {
-        if (!except.Contains(t.Namespace))
-        {
-            foreach (var r in renames)
-            {
-                if (t.Namespace.StartsWith(r.Source))
-                {
-                    var oldtn = t.FullName;
-                    t.Namespace = t.Namespace.Replace(r.Source, r.Target);
-                    Console.WriteLine("{0} -> {1}", oldtn, t.FullName);
-                }
-            }
-        }
-    }
+    Rename(ass.MainModule.GetTypeReferences());
 }
 
 Console.WriteLine("Saving assembly: {0}", assname);
@@ -86,8 +59,26 @@ else
     ass.Write(assname, new WriterParameters { WriteSymbols = hasPdb });
 }
 
+void Rename(IEnumerable<TypeReference> types)
+{
+    foreach (var t in types)
+    {
+        if (!except.Contains(t.Namespace))
+        {
+            foreach (var r in renames)
+            {
+                if (t.Namespace.StartsWith(r.Source))
+                {
+                    var oldtn = t.FullName;
+                    t.Namespace = t.Namespace.Replace(r.Source, r.Target);
+                    Console.WriteLine("{0} -> {1}", oldtn, t.FullName);
+                }
+            }
+        }
+    }
+}
+
 class Transform
 {
     public string Source, Target;
-    internal static Regex tx = new Regex("^(?<src>.+)=(?<tgt>.+)$", RegexOptions.Compiled);
 }

@@ -24,6 +24,10 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "msbuild", "msbuild", "{24C0
 		msbuild\Ironscheme.Build.targets = msbuild\Ironscheme.Build.targets
 	EndProjectSection
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Setup", "Setup\Setup.csproj", "{54C6AB55-8B1F-4EE5-8928-0C7C51BE5BA3}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EmbedResources", "EmbedResources\EmbedResources.csproj", "{FC57FA0D-2096-4E7D-BC2E-5F76889E7056}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -46,6 +50,14 @@ Global
 		{41096D80-3BF8-4569-958C-248F5EBC77D8}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{41096D80-3BF8-4569-958C-248F5EBC77D8}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{41096D80-3BF8-4569-958C-248F5EBC77D8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{54C6AB55-8B1F-4EE5-8928-0C7C51BE5BA3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{54C6AB55-8B1F-4EE5-8928-0C7C51BE5BA3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{54C6AB55-8B1F-4EE5-8928-0C7C51BE5BA3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{54C6AB55-8B1F-4EE5-8928-0C7C51BE5BA3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FC57FA0D-2096-4E7D-BC2E-5F76889E7056}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FC57FA0D-2096-4E7D-BC2E-5F76889E7056}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FC57FA0D-2096-4E7D-BC2E-5F76889E7056}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FC57FA0D-2096-4E7D-BC2E-5F76889E7056}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
