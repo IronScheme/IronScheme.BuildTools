@@ -1,0 +1,8 @@
+[submodule "gplex"]
+	path = gplex
+	url = https://github.com/IronScheme/gplex.git
+	branch = master
+[submodule "gppg"]
+	path = gppg
+	url = https://github.com/IronScheme/gppg.git
+	branch = master

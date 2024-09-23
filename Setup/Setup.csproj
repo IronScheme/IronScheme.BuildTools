@@ -16,6 +16,8 @@
 
   <ItemGroup>
     <ProjectReference Include="..\EmbedResources\EmbedResources.csproj" />
+    <ProjectReference Include="..\gplex\GPLEXv1.csproj" />
+    <ProjectReference Include="..\gppg\GPPG.csproj" />
     <ProjectReference Include="..\NamespaceRenamer\NamespaceRenamer.csproj" />
     <ProjectReference Include="..\ReferenceRemover\ReferenceRemover.csproj" />
     <ProjectReference Include="..\RuntimeChanger\RuntimeChanger.csproj" />
