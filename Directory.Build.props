@@ -1,7 +1,7 @@
 <Project>
   <PropertyGroup>
     <PlatformTarget>anycpu</PlatformTarget>
-    <TargetFramework Condition="$(TargetFramework) == ''">net4.0</TargetFramework>
+    <TargetFrameworks>net4.0;net9.0</TargetFrameworks>
     <UseCurrentRuntimeIdentifier>true</UseCurrentRuntimeIdentifier>
   </PropertyGroup>
 
