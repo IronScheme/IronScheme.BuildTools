@@ -78,7 +78,7 @@ Default source file extension is .il
             }
             else
             {
-                Console.WriteLine($"{ToolName} found at '{path}'");
+                //Console.WriteLine($"{ToolName} found at '{path}'");
             }
             return path;
         }

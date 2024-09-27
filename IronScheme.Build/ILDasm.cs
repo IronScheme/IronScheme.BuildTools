@@ -79,7 +79,7 @@ Options for LIB files only:
             }
             else
             {
-                Console.WriteLine($"{ToolName} found at '{path}'");
+                //Console.WriteLine($"{ToolName} found at '{path}'");
             }
             return path;
         }
