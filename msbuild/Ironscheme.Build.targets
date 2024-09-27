@@ -1,5 +1,0 @@
-<Project>
-  <Target Name="IronSchemeBuildTools">
-    <MSBuild Projects="$(MSBuildThisFileDirectory)../Setup/Setup.csproj" Properties="TargetFramework=$(IronSchemeBuildToolsTargetFramework)" Targets="Restore;Build"></MSBuild>
-  </Target>
-</Project>

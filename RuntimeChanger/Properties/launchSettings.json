@@ -1,9 +1,0 @@
-{
-  "profiles": {
-    "RuntimeChanger": {
-        "commandName": "Project",
-        "commandLineArgs": "IronScheme.Closures.dll",
-        "workingDirectory": ""
-    }
-  }
-}

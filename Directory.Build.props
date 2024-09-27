@@ -1,7 +1,6 @@
 <Project>
   <PropertyGroup>
     <PlatformTarget>anycpu</PlatformTarget>
-    <TargetFrameworks>net4.0;net9.0</TargetFrameworks>
     <Configuration Condition="$(Configuration) == ''">Release</Configuration>
     <UseCurrentRuntimeIdentifier>true</UseCurrentRuntimeIdentifier>
     <SuppressNETCoreSdkPreviewMessage>true</SuppressNETCoreSdkPreviewMessage>
