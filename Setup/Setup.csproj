@@ -18,6 +18,8 @@
   <ItemGroup>
     <PackageReference Include="Microsoft.NETCore.ILAsm" Version="9.0.0-*" PrivateAssets="all" />
     <PackageReference Include="Microsoft.NETCore.ILDAsm" Version="9.0.0-*" PrivateAssets="all" />
+    <!-- add here too as .net standard projects dont seem to copy references -->
+    <PackageReference Include="Mono.Cecil" Version="0.11.*" />
   </ItemGroup>
 
   <ItemGroup>
