@@ -2,6 +2,7 @@
 using Microsoft.Build.Utilities;
 using Microsoft.Build.Tasks;
 using System.Reflection;
+using System.Diagnostics;
 
 namespace IronScheme.Build
 {
@@ -70,9 +71,18 @@ Options for LIB files only:
 
         protected override string ToolName => "ildasm";
 
+        public override bool Execute()
+        {
+            //Debugger.Launch();
+            return base.Execute();
+        }
+
+        string _nativeToolPath;
+
         protected override string GenerateFullPathToTool()
         {
-            var path = TryFindToolPath();
+            _nativeToolPath ??= TryFindToolPath();
+            var path = _nativeToolPath;
             if (path is null)
             {
                 Log.LogError($"{ToolName} not found");
@@ -124,6 +134,8 @@ Options for LIB files only:
 
         protected override string GenerateCommandLineCommands()
         {
+            _nativeToolPath ??= TryFindToolPath();
+
             var commandLine = new CommandLineBuilderExtension();
 
             commandLine.AppendSwitchIfNotNull("-out=", OutputFile);
