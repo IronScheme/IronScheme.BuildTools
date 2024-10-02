@@ -37,6 +37,7 @@
       <Monolith>$(Net20OutputDir)IronScheme.dll</Monolith>
       <ConsoleExeTemplate>$(Net20OutputDir)IronScheme.Console</ConsoleExeTemplate>
       <IsOsUnixLike>$([MSBuild]::IsOsUnixLike())</IsOsUnixLike>
+      <FinalDir>$([MSBuild]::GetDirectoryNameOfFileAbove($(MSBuildProjectDirectory), 'IronSchemeCore.sln'))\bin\</FinalDir>
     </PropertyGroup>
 
     <PropertyGroup Condition="$(IsOsUnixLike) == 'True'">
@@ -141,13 +142,16 @@
     <Delete Files="@(Deleteme)" />
     <RemoveDir Directories="@(DeleteDir)" />
 
-    <ZipDirectory SourceDirectory="$(InstallStage)" Overwrite="True" DestinationFile="$(InstallStagePre)IronScheme-latest.zip" />
+    <RemoveDir Directories="$(FinalDir)" />
+    <MakeDir Directories="$(FinalDir)" />
+
+    <ZipDirectory SourceDirectory="$(InstallStage)" Overwrite="True" DestinationFile="$(FinalDir)IronScheme-latest.zip" />
 
     <Copy SourceFiles="$(Net20OutputDir)IronScheme.pdb" DestinationFolder="$(InstallStage)" />
 
-    <ZipDirectory SourceDirectory="$(InstallStage)" Overwrite="True" DestinationFile="$(InstallStagePre)IronScheme-latest-DEBUG.zip" />
+    <ZipDirectory SourceDirectory="$(InstallStage)" Overwrite="True" DestinationFile="$(FinalDir)IronScheme-latest-DEBUG.zip" />
 
-    <Message Importance="High" Text="Packaging done. Files are in: $(InstallStagePre)"/>
+    <Message Importance="High" Text="Packaging done. Files are in: $(FinalDir)"/>
 
   </Target>
 
