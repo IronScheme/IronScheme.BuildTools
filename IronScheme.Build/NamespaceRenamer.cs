@@ -19,31 +19,33 @@ namespace IronScheme.Build
         [Output]
         public ITaskItem Output { get; set; }
 
+        private void LogMessage(string message, params object[] args) => Log.LogMessage($"[{nameof(NamespaceRenamer)}] " + message, args);
+
         public override bool Execute()
         {
-            Log.LogMessage("Input: {0}", Input);
+            LogMessage("Input: {0}", Input);
             var input = Input.ItemSpec;
 
-            Log.LogMessage("Output: {0}", Output ?? Input);
+            LogMessage("Output: {0}", Output ?? Input);
             var output = Output?.ItemSpec ?? input;
 
-            Log.LogMessage("References: {0}", References);
+            LogMessage("References: {0}", References);
 
             var hasPdb = File.Exists(Path.ChangeExtension(input, "pdb"));
-            var ass = AssemblyDefinition.ReadAssembly(input, new ReaderParameters { ReadSymbols = hasPdb, InMemory = input == output });
+            using var ass = AssemblyDefinition.ReadAssembly(input, new ReaderParameters { ReadSymbols = hasPdb, InMemory = input == output });
 
             if (!References)
             {
-                Log.LogMessage("Renaming namespaces in {0}", ass.FullName);
+                LogMessage("Renaming namespaces in {0}", ass.FullName);
                 Rename(ass.MainModule.Types);
             }
             else
             {
-                Log.LogMessage("Renaming imported namespaces in {0}", ass.FullName);
+                LogMessage("Renaming imported namespaces in {0}", ass.FullName);
                 Rename(ass.MainModule.GetTypeReferences());
             }
 
-            Log.LogMessage("Saving assembly: {0}", output);
+            LogMessage("Saving assembly: {0}", output);
             ass.Write(output, new WriterParameters { WriteSymbols = hasPdb });
 
             return true;
@@ -58,13 +60,13 @@ namespace IronScheme.Build
                     foreach (var r in Renames)
                     {
                         var source = r.GetMetadata("Source");
-                        var target = r.GetMetadata("Target");
+                        var target = r.GetMetadata("TargetNS");
 
                         if (t.Namespace.StartsWith(source))
                         {
                             var oldtn = t.FullName;
                             t.Namespace = t.Namespace.Replace(source, target);
-                            Log.LogMessage("{0} -> {1}", oldtn, t.FullName);
+                            LogMessage("{0} -> {1}", oldtn, t.FullName);
                         }
                     }
                 }

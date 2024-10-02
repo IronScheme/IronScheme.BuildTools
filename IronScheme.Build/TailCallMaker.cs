@@ -11,12 +11,14 @@ namespace IronScheme.Build
         [Output]
         public ITaskItem Output { get; set; }
 
+        private void LogMessage(string message, params object[] args) => Log.LogMessage($"[{nameof(TailCallMaker)}] " + message, args);
+
         public override bool Execute()
         {
-            Log.LogMessage("Input: {0}", Input);
+            LogMessage("Input: {0}", Input);
             var input = Input.ItemSpec;
 
-            Log.LogMessage("Output: {0}", Output ?? Input);
+            LogMessage("Output: {0}", Output ?? Input);
             var output = Output?.ItemSpec ?? input;
 
             var lines = File.ReadAllLines(input);
@@ -58,7 +60,7 @@ namespace IronScheme.Build
                 }
             }
 
-            Log.LogMessage("Writing output to: {0}", output);
+            LogMessage("Writing output to: {0}", output);
             File.WriteAllLines(output, lines);
 
             return true;

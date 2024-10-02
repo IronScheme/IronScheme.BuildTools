@@ -15,28 +15,31 @@ namespace IronScheme.Build
         [Output]
         public ITaskItem Output { get; set; }
 
+        private void LogMessage(string message, params object[] args) => Log.LogMessage($"[{nameof(EmbedResources)}] " + message, args);
+
         public override bool Execute()
         {
-            Log.LogMessage("Input: {0}", Input);
+            LogMessage("Input: {0}", Input);
             var input = Input.ItemSpec;
 
-            Log.LogMessage("Output: {0}", Output ?? Input);
+            LogMessage("Output: {0}", Output ?? Input);
             var output = Output?.ItemSpec ?? input;
 
             var hasPdb = File.Exists(Path.ChangeExtension(input, "pdb"));
-            var ass = AssemblyDefinition.ReadAssembly(input, new ReaderParameters { ReadSymbols = hasPdb, InMemory = input == output });
+            using var ass = AssemblyDefinition.ReadAssembly(input, new ReaderParameters { ReadSymbols = hasPdb, InMemory = input == output });
             var resources = ass.MainModule.Resources;
 
             foreach (var embed in Resources)
             {
                 var file = embed.ItemSpec;
-                var name = embed.GetMetadata("Name") ?? Path.GetFileName(file);
+                var mname = embed.GetMetadata("Name");
+                var name = string.IsNullOrEmpty(mname) ? Path.GetFileName(file) : mname;
 
-                Log.LogMessage("Embedding resource: {0} as {1}", file, name);
+                LogMessage("Embedding resource: {0} as {1}", file, name);
                 resources.Add(new EmbeddedResource(name, ManifestResourceAttributes.Public, File.OpenRead(file)));
             }
 
-            Log.LogMessage("Saving assembly: {0}", output);
+            LogMessage("Saving assembly: {0}", output);
             ass.Write(output, new WriterParameters { WriteSymbols = hasPdb });
 
             return true;
