@@ -105,7 +105,8 @@
     <ItemGroup>
       <InstallFiles Include="$(ConsoleExeTemplate)32-v2.exe;$(ConsoleExeTemplate)32-v4.exe;$(ConsoleExeTemplate)-v2.exe;$(ConsoleExeTemplate)-v4.exe"/>
       <InstallFiles Include="$(Core21OutputDir)IronScheme.ConsoleCore.dll;$(Core21OutputDir)IronScheme.ConsoleCore.pdb;$(Core21OutputDir)IronScheme.ConsoleCore.runtimeconfig.json"/>
-      <InstallFiles Include="$(Net90OutputDir)IronScheme.ConsoleCore.exe" />
+      <InstallFiles Condition="$([MSBuild]::IsOsUnixLike()) == 'True'" Include="$(Net90OutputDir)IronScheme.ConsoleCore" />
+      <InstallFiles Condition="$([MSBuild]::IsOsUnixLike()) != 'True'" Include="$(Net90OutputDir)IronScheme.ConsoleCore.exe" />
       <InstallFiles Include="$(Net20OutputDir)system-libraries.ss;$(Net20OutputDir)system-libraries.srfi.ss" />
       <InstallFiles Include="$(Monolith)" />
     </ItemGroup>
