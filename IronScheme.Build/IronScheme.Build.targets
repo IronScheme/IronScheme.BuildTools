@@ -51,7 +51,8 @@
     <Exec Command="$(IronScheme) -debug ironscheme-buildscript.sps" WorkingDirectory="$(BootstrapDir)" />
     <Exec Command="echo '1' | $(IronScheme) -debug" WorkingDirectory="$(BootstrapDir)" />
 
-    <Copy Condition="$([MSBuild]::IsOsUnixLike()) == 'True'" SourceFiles="$(BootstrapDir)ironscheme.boot.*" DestinationFolder="$(Net20OutputDir)" />
+    <Copy Condition="$([MSBuild]::IsOsUnixLike()) == 'True'" SourceFiles="$(BootstrapDir)ironscheme.boot.dll" DestinationFolder="$(Net20OutputDir)" />
+    <Copy Condition="$([MSBuild]::IsOsUnixLike()) == 'True'" SourceFiles="$(BootstrapDir)ironscheme.boot.pdb" DestinationFolder="$(Net20OutputDir)" />
 
     <RemoveDir Directories="$(Net20OutputDir)merged" />
     <MakeDir Directories="$(Net20OutputDir)merged" />
