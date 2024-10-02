@@ -49,7 +49,7 @@
       <IronScheme>$(BootstrapDir)IronScheme.Console.exe</IronScheme>
     </PropertyGroup>
 
-    <Exec Command="$(IronScheme) -debug ironscheme-buildscript.sps" WorkingDirectory="$(BootstrapDir)" />
+    <Exec Command="$(IronScheme) -debug ironscheme-buildscript.sps" WorkingDirectory="$(BootstrapDir)" StandardErrorImportance="Normal" StandardOutputImportance="Normal" />
     <Exec Command="echo '1' | $(IronScheme) -debug" WorkingDirectory="$(BootstrapDir)" />
 
     <Copy Condition="$(IsOsUnixLike) == 'True'" SourceFiles="$(BootstrapDir)ironscheme.boot.dll" DestinationFolder="$(Net20OutputDir)" />
