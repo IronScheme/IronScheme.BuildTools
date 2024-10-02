@@ -38,6 +38,21 @@
       <ConsoleExeTemplate>$(Net20OutputDir)IronScheme.Console</ConsoleExeTemplate>
     </PropertyGroup>
 
+    <PropertyGroup Condition="$([MSBuild]::IsOsUnixLike()) == 'True'">
+      <BootstrapDir>$(Net90OutputDir)</BootstrapDir>
+      <IronScheme>$(BootstrapDir)IronScheme.ConsoleCore</IronScheme>
+    </PropertyGroup>
+
+    <PropertyGroup Condition="$([MSBuild]::IsOsUnixLike()) != 'True'">
+      <BootstrapDir>$(Net20OutputDir)</BootstrapDir>
+      <IronScheme>$(BootstrapDir)IronScheme.Console.exe</IronScheme>
+    </PropertyGroup>
+
+    <Exec Command="$(IronScheme) -debug ironscheme-buildscript.sps" WorkingDirectory="$(BootstrapDir)" />
+    <Exec Command="echo '1' | $(IronScheme) -debug" WorkingDirectory="$(BootstrapDir)" />
+
+    <Copy Condition="$([MSBuild]::IsOsUnixLike()) == 'True'" SourceFiles="$(BootstrapDir)ironscheme.boot.*" DestinationFolder="$(Net20OutputDir)" />
+
     <RemoveDir Directories="$(Net20OutputDir)merged" />
     <MakeDir Directories="$(Net20OutputDir)merged" />
 
@@ -45,9 +60,6 @@
       <AllOutput Include="$(Net20OutputDir);$(Core21OutputDir);$(Net90OutputDir)" />
       <PalRename Include="@(AllOutput)" Source="Microsoft" TargetNS="IronScheme" />
     </ItemGroup>
-
-    <Exec Command="IronScheme.Console.exe -debug ironscheme-buildscript.sps" WorkingDirectory="$(Net20OutputDir)" />
-    <Exec Command="echo '1' | IronScheme.Console.exe -debug" WorkingDirectory="$(Net20OutputDir)" />
 
     <ReferenceRemover Input="%(AllOutput.PalAssembly)" Include="IronScheme\.Scripting" Target="$(Monolith)" />
     <NamespaceRenamer Input="%(AllOutput.PalAssembly)" References="true" Renames="@(PalRename)" />
