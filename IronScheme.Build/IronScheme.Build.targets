@@ -36,14 +36,15 @@
       <Net90OutputDir>$(_OutDir)net9.0\</Net90OutputDir>
       <Monolith>$(Net20OutputDir)IronScheme.dll</Monolith>
       <ConsoleExeTemplate>$(Net20OutputDir)IronScheme.Console</ConsoleExeTemplate>
+      <IsOsUnixLike>$([MSBuild]::IsOsUnixLike())</IsOsUnixLike>
     </PropertyGroup>
 
-    <PropertyGroup Condition="$([MSBuild]::IsOsUnixLike()) == 'True'">
+    <PropertyGroup Condition="$(IsOsUnixLike) == 'True'">
       <BootstrapDir>$(Net90OutputDir)</BootstrapDir>
       <IronScheme>$(BootstrapDir)IronScheme.ConsoleCore</IronScheme>
     </PropertyGroup>
 
-    <PropertyGroup Condition="$([MSBuild]::IsOsUnixLike()) != 'True'">
+    <PropertyGroup Condition="$(IsOsUnixLike) != 'True'">
       <BootstrapDir>$(Net20OutputDir)</BootstrapDir>
       <IronScheme>$(BootstrapDir)IronScheme.Console.exe</IronScheme>
     </PropertyGroup>
@@ -51,8 +52,8 @@
     <Exec Command="$(IronScheme) -debug ironscheme-buildscript.sps" WorkingDirectory="$(BootstrapDir)" />
     <Exec Command="echo '1' | $(IronScheme) -debug" WorkingDirectory="$(BootstrapDir)" />
 
-    <Copy Condition="$([MSBuild]::IsOsUnixLike()) == 'True'" SourceFiles="$(BootstrapDir)ironscheme.boot.dll" DestinationFolder="$(Net20OutputDir)" />
-    <Copy Condition="$([MSBuild]::IsOsUnixLike()) == 'True'" SourceFiles="$(BootstrapDir)ironscheme.boot.pdb" DestinationFolder="$(Net20OutputDir)" />
+    <Copy Condition="$(IsOsUnixLike) == 'True'" SourceFiles="$(BootstrapDir)ironscheme.boot.dll" DestinationFolder="$(Net20OutputDir)" />
+    <Copy Condition="$(IsOsUnixLike) == 'True'" SourceFiles="$(BootstrapDir)ironscheme.boot.pdb" DestinationFolder="$(Net20OutputDir)" />
 
     <RemoveDir Directories="$(Net20OutputDir)merged" />
     <MakeDir Directories="$(Net20OutputDir)merged" />
@@ -91,6 +92,7 @@
 
     <NamespaceRenamer Input="$(Monolith)" Renames="@(FinalRename)" />
     <ReferenceRemover Input="$(Core21OutputDir)IronScheme.ConsoleCore.dll" Include="IronScheme\.Closures" Target="$(Monolith)" />
+    <ReferenceRemover Input="$(Net90OutputDir)IronScheme.ConsoleCore.dll" Include="IronScheme\.Closures" Target="$(Monolith)" />
 
     <RuntimeChanger Input="$(ConsoleExeTemplate).exe" Output="$(ConsoleExeTemplate)32-v2.exe" Required32Bit="true" />
     <RuntimeChanger Input="$(ConsoleExeTemplate).exe" Output="$(ConsoleExeTemplate)32-v4.exe" TargetRuntime="v4" Required32Bit="true" />
@@ -99,14 +101,15 @@
 
     <PropertyGroup>
       <InstallStagePre>$(Net20OutputDir)install-stage\</InstallStagePre>
-      <InstallStage>$(InstallStagePre)IronScheme</InstallStage>
+      <InstallStage>$(InstallStagePre)IronScheme\</InstallStage>
     </PropertyGroup>
 
     <ItemGroup>
-      <InstallFiles Include="$(ConsoleExeTemplate)32-v2.exe;$(ConsoleExeTemplate)32-v4.exe;$(ConsoleExeTemplate)-v2.exe;$(ConsoleExeTemplate)-v4.exe"/>
-      <InstallFiles Include="$(Core21OutputDir)IronScheme.ConsoleCore.dll;$(Core21OutputDir)IronScheme.ConsoleCore.runtimeconfig.json"/>
-      <InstallFiles Condition="$([MSBuild]::IsOsUnixLike()) == 'True'" Include="$(Net90OutputDir)IronScheme.ConsoleCore" />
-      <InstallFiles Condition="$([MSBuild]::IsOsUnixLike()) != 'True'" Include="$(Net90OutputDir)IronScheme.ConsoleCore.exe" />
+      <InstallFiles Condition="$(IsOsUnixLike) != 'True'" Include="$(ConsoleExeTemplate)32-v2.exe;$(ConsoleExeTemplate)32-v4.exe;$(ConsoleExeTemplate)-v2.exe;$(ConsoleExeTemplate)-v4.exe"/>
+      <InstallFiles Condition="$(IsOsUnixLike) == 'True'" Include="$(Net90OutputDir)IronScheme.ConsoleCore.dll;$(Net90OutputDir)IronScheme.ConsoleCore.runtimeconfig.json"/>
+      <InstallFiles Condition="$(IsOsUnixLike) != 'True'" Include="$(Core21OutputDir)IronScheme.ConsoleCore.dll;$(Core21OutputDir)IronScheme.ConsoleCore.runtimeconfig.json"/>
+      <InstallFiles Condition="$(IsOsUnixLike) == 'True'" Include="$(Net90OutputDir)IronScheme.ConsoleCore" />
+      <InstallFiles Condition="$(IsOsUnixLike) != 'True'" Include="$(Net90OutputDir)IronScheme.ConsoleCore.exe" />
       <InstallFiles Include="$(Net20OutputDir)system-libraries.ss;$(Net20OutputDir)system-libraries.srfi.ss" />
       <InstallFiles Include="$(Monolith)" />
     </ItemGroup>
@@ -115,10 +118,13 @@
     <MakeDir Directories="$(InstallStage)" />
 
     <Copy SourceFiles="@(InstallFiles)" DestinationFolder="$(InstallStage)" />
-    <Copy SourceFolders="$(MSBuildProjectDirectory)\examples\" DestinationFolder="$(InstallStage)\examples\" />
-    <Copy SourceFolders="$(MSBuildProjectDirectory)\docs\" DestinationFolder="$(InstallStage)\docs\" />
-    <Copy SourceFolders="$(MSBuildProjectDirectory)\lib\" DestinationFolder="$(InstallStage)\lib\" />
-    <Copy SourceFolders="$(MSBuildProjectDirectory)\tests\" DestinationFolder="$(InstallStage)\tests\" />
+    <Copy SourceFolders="$(MSBuildProjectDirectory)\examples\" DestinationFolder="$(InstallStage)examples\" />
+    <Copy SourceFolders="$(MSBuildProjectDirectory)\docs\" DestinationFolder="$(InstallStage)docs\" />
+    <Copy SourceFolders="$(MSBuildProjectDirectory)\lib\" DestinationFolder="$(InstallStage)lib\" />
+    <Copy SourceFolders="$(MSBuildProjectDirectory)\tests\" DestinationFolder="$(InstallStage)tests\" />
+
+    <Copy Condition="$(IsOsUnixLike) != 'True'" ContinueOnError="true" SourceFiles="$(Net90OutputDir)linux-x64\IronScheme.ConsoleCore" DestinationFiles="$(InstallStage)IronScheme.ConsoleCore.linux-x64" />
+    <Copy Condition="$(IsOsUnixLike) != 'True'" ContinueOnError="true" SourceFiles="$(Net90OutputDir)osx-x64\IronScheme.ConsoleCore" DestinationFiles="$(InstallStage)IronScheme.ConsoleCore.osx-x64" />
 
     <ItemGroup>
       <Deleteme Include="$(InstallStage)lib\minikanren\mktests.scm" />
@@ -127,6 +133,7 @@
       <Deleteme Include="$(InstallStage)lib\wak\fmt\private\test*.scm" />
       <Deleteme Include="$(InstallStage)lib\wak\foof-loop\private\test-foof-loop.scm" />
       <Deleteme Include="$(InstallStage)IronScheme.ConsoleCore.pdb" />
+      <DeleteDir Include="$(InstallStage)lib\srfi\.github" />
       <DeleteDir Include="$(InstallStage)lib\srfi\tests" />
       <DeleteDir Include="$(InstallStage)docs\notes" />
     </ItemGroup>
