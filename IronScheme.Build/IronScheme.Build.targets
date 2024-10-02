@@ -37,6 +37,7 @@
       <Monolith>$(Net20OutputDir)IronScheme.dll</Monolith>
       <ConsoleExeTemplate>$(Net20OutputDir)IronScheme.Console</ConsoleExeTemplate>
       <IsOsUnixLike>$([MSBuild]::IsOsUnixLike())</IsOsUnixLike>
+      <MergeDir>$(Net20OutputDir)merged\</MergeDir>
       <FinalDir>$([MSBuild]::GetDirectoryNameOfFileAbove($(MSBuildProjectDirectory), 'IronSchemeCore.sln'))\bin\</FinalDir>
     </PropertyGroup>
 
@@ -56,9 +57,6 @@
     <Copy Condition="$(IsOsUnixLike) == 'True'" SourceFiles="$(BootstrapDir)ironscheme.boot.dll" DestinationFolder="$(Net20OutputDir)" />
     <Copy Condition="$(IsOsUnixLike) == 'True'" SourceFiles="$(BootstrapDir)ironscheme.boot.pdb" DestinationFolder="$(Net20OutputDir)" />
 
-    <RemoveDir Directories="$(Net20OutputDir)merged" />
-    <MakeDir Directories="$(Net20OutputDir)merged" />
-
     <ItemGroup>
       <AllOutput Include="$(Net20OutputDir);$(Core21OutputDir);$(Net90OutputDir)" />
       <PalRename Include="@(AllOutput)" Source="Microsoft" TargetNS="IronScheme" />
@@ -70,8 +68,8 @@
     <ILRepack Output="$(Net90OutputDir)net9-IronScheme.FrameworkPAL.dll" Input="$(Net90OutputDir)IronScheme.FrameworkPAL.dll;$(Net90OutputDir)System.Runtime.Serialization.Formatters.dll" />
 
     <ItemGroup>
-      <Embeds Include="$(Net20OutputDir)IronScheme.FrameworkPAL.dll" />
-      <Embeds Include="$(Core21OutputDir)IronScheme.FrameworkPAL.dll" Name="core-IronScheme.FrameworkPAL.dll" />
+      <Embeds Condition="$(IsOsUnixLike) != 'True'" Include="$(Net20OutputDir)IronScheme.FrameworkPAL.dll" />
+      <Embeds Condition="$(IsOsUnixLike) != 'True'" Include="$(Core21OutputDir)IronScheme.FrameworkPAL.dll" Name="core-IronScheme.FrameworkPAL.dll" />
       <Embeds Include="$(Net90OutputDir)net9-IronScheme.FrameworkPAL.dll" />
     </ItemGroup>
 
@@ -81,9 +79,11 @@
       <MonolithInput Include="$(Monolith);$(Net20OutputDir)IronScheme.Closures.dll;$(Net20OutputDir)IronScheme.Scripting.dll;$(Net20OutputDir)Oyster.IntX.dll;$(Net20OutputDir)ironscheme.boot.dll" />
     </ItemGroup>
 
-    <ILRepack Output="$(Net20OutputDir)merged/IronScheme.dll" Input="@(MonolithInput)" />
+    <RemoveDir Directories="$(MergeDir)" />
+    <MakeDir Directories="$(MergeDir)" />
 
-    <Copy SourceFolders="$(Net20OutputDir)merged/" DestinationFolder="$(Net20OutputDir)" />
+    <ILRepack Output="$(MergeDir)IronScheme.dll" Input="@(MonolithInput)" />
+    <Copy SourceFolders="$(MergeDir)" DestinationFolder="$(Net20OutputDir)" />
 
     <ItemGroup>
       <FinalRename Include="1" Source="Microsoft" TargetNS="IronScheme" />
