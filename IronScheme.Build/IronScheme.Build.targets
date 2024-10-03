@@ -57,6 +57,8 @@
     <Copy Condition="$(IsOsUnixLike) == 'True'" SourceFiles="$(BootstrapDir)ironscheme.boot.dll" DestinationFolder="$(Net20OutputDir)" />
     <Copy Condition="$(IsOsUnixLike) == 'True'" SourceFiles="$(BootstrapDir)ironscheme.boot.pdb" DestinationFolder="$(Net20OutputDir)" />
 
+    <Message Importance="High" Text="Bootstrapping completed"/>
+
     <ItemGroup>
       <AllOutput Include="$(Net20OutputDir);$(Core21OutputDir);$(Net90OutputDir)" />
       <PalRename Include="@(AllOutput)" Source="Microsoft" TargetNS="IronScheme" />
@@ -74,6 +76,8 @@
     </ItemGroup>
 
     <EmbedResources Input="$(Monolith)" Resources="@(Embeds)" />
+
+    <Message Importance="High" Text="PAL's combined"/>
 
     <ItemGroup>
       <MonolithInput Include="$(Monolith);$(Net20OutputDir)IronScheme.Closures.dll;$(Net20OutputDir)IronScheme.Scripting.dll;$(Net20OutputDir)Oyster.IntX.dll;$(Net20OutputDir)ironscheme.boot.dll" />
@@ -99,6 +103,8 @@
     <RuntimeChanger Input="$(ConsoleExeTemplate).exe" Output="$(ConsoleExeTemplate)32-v4.exe" TargetRuntime="v4" Required32Bit="true" />
     <RuntimeChanger Input="$(ConsoleExeTemplate).exe" Output="$(ConsoleExeTemplate)-v2.exe" />
     <RuntimeChanger Input="$(ConsoleExeTemplate).exe" Output="$(ConsoleExeTemplate)-v4.exe" TargetRuntime="v4"/>
+
+    <Message Importance="High" Text="Assemblies combined"/>
 
     <PropertyGroup>
       <InstallStagePre>$(Net20OutputDir)install-stage\</InstallStagePre>
@@ -141,6 +147,8 @@
 
     <Delete Files="@(Deleteme)" />
     <RemoveDir Directories="@(DeleteDir)" />
+
+    <Message Importance="High" Text="Files staged"/>
 
     <RemoveDir Directories="$(FinalDir)" />
     <MakeDir Directories="$(FinalDir)" />
