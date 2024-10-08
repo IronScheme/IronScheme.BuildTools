@@ -1,0 +1,21 @@
+<Project>
+  <PropertyGroup>
+    <tmp>$(MSBuildThisFileDirectory)IronScheme.Build.dll</tmp>
+    <IronSchemeBuildAssemblyFile Condition="Exists('$(tmp)')">$(tmp)</IronSchemeBuildAssemblyFile>
+    <tmp>$(MSBuildThisFileDirectory)../bin/IronScheme.Build.dll</tmp>
+    <IronSchemeBuildAssemblyFile Condition="Exists('$(tmp)')">$(tmp)</IronSchemeBuildAssemblyFile>
+  </PropertyGroup>
+
+  <!-- tools -->
+  <UsingTask TaskName="IronScheme.Build.NamespaceRenamer" AssemblyFile="$(IronSchemeBuildAssemblyFile)" />
+  <UsingTask TaskName="IronScheme.Build.ReferenceRemover" AssemblyFile="$(IronSchemeBuildAssemblyFile)" />
+  <UsingTask TaskName="IronScheme.Build.Gplex" AssemblyFile="$(IronSchemeBuildAssemblyFile)" />
+  <UsingTask TaskName="IronScheme.Build.Gppg" AssemblyFile="$(IronSchemeBuildAssemblyFile)" />
+  <UsingTask TaskName="IronScheme.Build.EmbedResources" AssemblyFile="$(IronSchemeBuildAssemblyFile)" />
+  <UsingTask TaskName="IronScheme.Build.RuntimeChanger" AssemblyFile="$(IronSchemeBuildAssemblyFile)" />
+  <UsingTask TaskName="IronScheme.Build.TailCallMaker" AssemblyFile="$(IronSchemeBuildAssemblyFile)" />
+  <UsingTask TaskName="IronScheme.Build.ILDasm" AssemblyFile="$(IronSchemeBuildAssemblyFile)" />
+  <UsingTask TaskName="IronScheme.Build.ILAsm" AssemblyFile="$(IronSchemeBuildAssemblyFile)" />
+  <UsingTask TaskName="IronScheme.Build.ILRepack" AssemblyFile="$(IronSchemeBuildAssemblyFile)" />
+  <UsingTask TaskName="IronScheme.Build.PdbConvert" AssemblyFile="$(IronSchemeBuildAssemblyFile)" />
+</Project>

@@ -11,9 +11,13 @@
   <ItemGroup>
     <None Remove="IronScheme.Build.props" />
     <None Remove="IronScheme.Build.targets" />
+    <None Remove="IronScheme.Build.tasks" />
   </ItemGroup>
 
   <ItemGroup>
+    <Content Include="IronScheme.Build.tasks">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="IronScheme.Build.props">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>

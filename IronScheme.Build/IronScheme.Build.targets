@@ -4,22 +4,7 @@
     <MSBuild Projects="$(MSBuildThisFileDirectory)../IronScheme.Build/IronScheme.Build.csproj" Properties="TargetFramework=netstandard2.0" />
   </Target>
 
-  <PropertyGroup>
-    <IronSchemeBuildAssemblyFile>$(MSBuildThisFileDirectory)IronScheme.Build.dll</IronSchemeBuildAssemblyFile>
-  </PropertyGroup>
-
-  <!-- tools -->
-  <UsingTask TaskName="IronScheme.Build.NamespaceRenamer" AssemblyFile="$(IronSchemeBuildAssemblyFile)" />
-  <UsingTask TaskName="IronScheme.Build.ReferenceRemover" AssemblyFile="$(IronSchemeBuildAssemblyFile)" />
-  <UsingTask TaskName="IronScheme.Build.Gplex" AssemblyFile="$(IronSchemeBuildAssemblyFile)" />
-  <UsingTask TaskName="IronScheme.Build.Gppg" AssemblyFile="$(IronSchemeBuildAssemblyFile)" />
-  <UsingTask TaskName="IronScheme.Build.EmbedResources" AssemblyFile="$(IronSchemeBuildAssemblyFile)" />
-  <UsingTask TaskName="IronScheme.Build.RuntimeChanger" AssemblyFile="$(IronSchemeBuildAssemblyFile)" />
-  <UsingTask TaskName="IronScheme.Build.TailCallMaker" AssemblyFile="$(IronSchemeBuildAssemblyFile)" />
-  <UsingTask TaskName="IronScheme.Build.ILDasm" AssemblyFile="$(IronSchemeBuildAssemblyFile)" />
-  <UsingTask TaskName="IronScheme.Build.ILAsm" AssemblyFile="$(IronSchemeBuildAssemblyFile)" />
-  <UsingTask TaskName="IronScheme.Build.ILRepack" AssemblyFile="$(IronSchemeBuildAssemblyFile)" />
-  <UsingTask TaskName="IronScheme.Build.PdbConvert" AssemblyFile="$(IronSchemeBuildAssemblyFile)" />
+  <Import Project="$(MSBuildThisFileDirectory)IronScheme.Build.tasks" />
 
   <ItemDefinitionGroup>
     <AllOutput>
@@ -86,6 +71,8 @@
 
     <RemoveDir Directories="$(MergeDir)" />
     <MakeDir Directories="$(MergeDir)" />
+
+    <PdbConvert Condition="Exists(%(MonolithInput.Identity))" Input="%(MonolithInput.Identity)" DebugType="portable" />
 
     <ILRepack Output="$(MergeDir)IronScheme.dll" Input="@(MonolithInput)" />
     <Copy SourceFolders="$(MergeDir)" DestinationFolder="$(Net20OutputDir)" />
