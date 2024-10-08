@@ -72,7 +72,7 @@
     <RemoveDir Directories="$(MergeDir)" />
     <MakeDir Directories="$(MergeDir)" />
 
-    <PdbConvert Condition="Exists(%(MonolithInput.Identity))" Input="%(MonolithInput.Identity)" DebugType="portable" />
+    <!--<PdbConvert Condition="Exists(%(MonolithInput.Identity))" Input="%(MonolithInput.Identity)" DebugType="portable" />-->
 
     <ILRepack Output="$(MergeDir)IronScheme.dll" Input="@(MonolithInput)" />
     <Copy SourceFolders="$(MergeDir)" DestinationFolder="$(Net20OutputDir)" />
