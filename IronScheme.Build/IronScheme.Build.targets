@@ -19,6 +19,7 @@
   <UsingTask TaskName="IronScheme.Build.ILDasm" AssemblyFile="$(IronSchemeBuildAssemblyFile)" />
   <UsingTask TaskName="IronScheme.Build.ILAsm" AssemblyFile="$(IronSchemeBuildAssemblyFile)" />
   <UsingTask TaskName="IronScheme.Build.ILRepack" AssemblyFile="$(IronSchemeBuildAssemblyFile)" />
+  <UsingTask TaskName="IronScheme.Build.PdbConvert" AssemblyFile="$(IronSchemeBuildAssemblyFile)" />
 
   <ItemDefinitionGroup>
     <AllOutput>
@@ -96,8 +97,12 @@
     </ItemGroup>
 
     <NamespaceRenamer Input="$(Monolith)" Renames="@(FinalRename)" />
+
     <ReferenceRemover Input="$(Core21OutputDir)IronScheme.ConsoleCore.dll" Include="IronScheme\.Closures" Target="$(Monolith)" />
     <ReferenceRemover Input="$(Net90OutputDir)IronScheme.ConsoleCore.dll" Include="IronScheme\.Closures" Target="$(Monolith)" />
+
+
+    <!--<PdbConvert Condition="Exists($(Monolith))" Input="$(Monolith)" DebugType="embedded" />-->
 
     <RuntimeChanger Input="$(ConsoleExeTemplate).exe" Output="$(ConsoleExeTemplate)32-v2.exe" Required32Bit="true" />
     <RuntimeChanger Input="$(ConsoleExeTemplate).exe" Output="$(ConsoleExeTemplate)32-v4.exe" TargetRuntime="v4" Required32Bit="true" />

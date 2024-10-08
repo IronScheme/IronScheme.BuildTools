@@ -1,6 +1,5 @@
 <Project>
   <PropertyGroup>
     <IronSchemeBuildToolsTargetFramework Condition="$(IronSchemeBuildToolsTargetFramework) == ''">net4.0</IronSchemeBuildToolsTargetFramework>
-    <IronSchemeBuildToolsPath>$(MSBuildThisFileDirectory)</IronSchemeBuildToolsPath>
   </PropertyGroup>
 </Project>

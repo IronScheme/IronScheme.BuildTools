@@ -26,7 +26,7 @@ namespace IronScheme.Build
             var output = Output?.ItemSpec ?? input;
 
             var hasPdb = File.Exists(Path.ChangeExtension(input, "pdb"));
-            using var ass = AssemblyDefinition.ReadAssembly(input, new ReaderParameters { ReadSymbols = hasPdb, InMemory = input == output });
+            using var ass = AssemblyDefinition.ReadAssembly(input, new ReaderParameters { ThrowIfSymbolsAreNotMatching = true, ReadSymbols = hasPdb, InMemory = input == output });
             var resources = ass.MainModule.Resources;
 
             foreach (var embed in Resources)

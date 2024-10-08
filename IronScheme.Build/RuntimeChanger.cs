@@ -30,7 +30,7 @@ namespace IronScheme.Build
             LogMessage("Required32Bit: {0}", Required32Bit);
 
             var hasPdb = File.Exists(Path.ChangeExtension(input, "pdb"));
-            using var ass = AssemblyDefinition.ReadAssembly(input, new ReaderParameters { ReadSymbols = hasPdb, InMemory = input == output });
+            using var ass = AssemblyDefinition.ReadAssembly(input, new ReaderParameters { ThrowIfSymbolsAreNotMatching = true, ReadSymbols = hasPdb, InMemory = input == output });
 
             var current = FindRuntime(ass);
 

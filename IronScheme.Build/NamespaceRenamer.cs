@@ -32,7 +32,7 @@ namespace IronScheme.Build
             LogMessage("References: {0}", References);
 
             var hasPdb = File.Exists(Path.ChangeExtension(input, "pdb"));
-            using var ass = AssemblyDefinition.ReadAssembly(input, new ReaderParameters { ReadSymbols = hasPdb, InMemory = input == output });
+            using var ass = AssemblyDefinition.ReadAssembly(input, new ReaderParameters { ThrowIfSymbolsAreNotMatching = true, ReadSymbols = hasPdb, InMemory = input == output });
 
             if (!References)
             {
