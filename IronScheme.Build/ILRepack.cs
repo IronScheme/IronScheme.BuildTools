@@ -100,6 +100,8 @@ Note: for compatibility purposes, all Options are case insensitive, and can be s
             commandLine.AppendSwitch("-noRepackRes");
             commandLine.AppendSwitch("-parallel");
 
+            commandLine.AppendSwitch("-verbose");
+
             foreach (var input in Input)
             {
                 commandLine.AppendFileNameIfNotNull(input);
