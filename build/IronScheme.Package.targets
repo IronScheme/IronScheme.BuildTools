@@ -85,7 +85,7 @@
 
     <PdbConvert Input="$(Monolith)" Output="$(Monolith).portable.dll" DebugType="portable" />
     <PdbConvert Input="$(Monolith)" Output="$(Monolith).embedded.dll" DebugType="embedded" />
-    <PdbConvert Input="$(Monolith).portable.dll" Output="$(Monolith).roundtrip.dll" DebugType="windows" ContinueOnError="true" />
+    <PdbConvert Condition="$(IsOsUnixLike) != 'True'" Input="$(Monolith).portable.dll" Output="$(Monolith).roundtrip.dll" DebugType="windows" />
 
     <RuntimeChanger Input="$(ConsoleExeTemplate).exe" Output="$(ConsoleExeTemplate)32-v2.exe" Required32Bit="true" />
     <RuntimeChanger Input="$(ConsoleExeTemplate).exe" Output="$(ConsoleExeTemplate)32-v4.exe" TargetRuntime="v4" Required32Bit="true" />
