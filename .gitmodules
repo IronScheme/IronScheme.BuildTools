@@ -6,3 +6,7 @@
 	path = gppg
 	url = https://github.com/IronScheme/gppg.git
 	branch = master
+[submodule "cecil"]
+	path = cecil
+	url = https://github.com/IronScheme/cecil.git
+	branch = master

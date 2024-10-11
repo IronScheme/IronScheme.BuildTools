@@ -12,6 +12,10 @@
     <PackageReference Include="Microsoft.Build.Tasks.Core" Version="17.11.4" />
     <PackageReference Include="Microsoft.Build.Utilities.Core" Version="17.11.4" />
     <PackageReference Include="System.Formats.Asn1" Version="8.0.1" />
-    <PackageReference Include="Mono.Cecil" Version="0.11.*" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\cecil\Mono.Cecil.csproj" />
+    <ProjectReference Include="..\cecil\symbols\pdb\Mono.Cecil.Pdb.csproj" />
   </ItemGroup>
 </Project>
