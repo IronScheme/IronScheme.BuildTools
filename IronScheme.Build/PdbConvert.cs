@@ -56,6 +56,7 @@ namespace IronScheme.Build
                     case "native":
                     case "full":
                     case "pdbonly":
+                    case "windows":
                         return new NativePdbWriterProvider();
                     case "portable":
                         return new PortablePdbWriterProvider();
