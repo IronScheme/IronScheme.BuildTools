@@ -18,6 +18,13 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GPPG", "gppg\GPPG.csproj", 
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IronScheme.Build", "IronScheme.Build\IronScheme.Build.csproj", "{FAE3EFF6-4339-41B1-91A7-F2057C26D35E}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "build", "build", "{241DF318-9D2E-4897-AC9B-5CD00299D130}"
+	ProjectSection(SolutionItems) = preProject
+		build\IronScheme.Build.props = build\IronScheme.Build.props
+		build\IronScheme.Build.targets = build\IronScheme.Build.targets
+		build\IronScheme.Build.tasks = build\IronScheme.Build.tasks
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
