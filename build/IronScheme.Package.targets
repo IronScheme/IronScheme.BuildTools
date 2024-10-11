@@ -143,9 +143,9 @@
 
     <ZipDirectory SourceDirectory="$(InstallStage)" Overwrite="True" DestinationFile="$(FinalDir)IronScheme-latest.zip" />
 
-    <Copy SourceFiles="$(Net20OutputDir)IronScheme.pdb" DestinationFolder="$(InstallStage)" />
+    <Copy Condition="$(IsOsUnixLike) != 'True'" SourceFiles="$(Net20OutputDir)IronScheme.pdb" DestinationFolder="$(InstallStage)" />
 
-    <ZipDirectory SourceDirectory="$(InstallStage)" Overwrite="True" DestinationFile="$(FinalDir)IronScheme-latest-DEBUG.zip" />
+    <ZipDirectory Condition="$(IsOsUnixLike) != 'True'" SourceDirectory="$(InstallStage)" Overwrite="True" DestinationFile="$(FinalDir)IronScheme-latest-DEBUG.zip" />
 
     <Message Importance="High" Text="Packaging done. Files are in: $(FinalDir)"/>
 
