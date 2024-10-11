@@ -1,7 +1,5 @@
 <Project>
   <PropertyGroup>
-    <tmp>$(MSBuildThisFileDirectory)IronScheme.Build.dll</tmp>
-    <IronSchemeBuildAssemblyFile Condition="Exists('$(tmp)')">$(tmp)</IronSchemeBuildAssemblyFile>
     <tmp>$(MSBuildThisFileDirectory)../bin/IronScheme.Build.dll</tmp>
     <IronSchemeBuildAssemblyFile Condition="Exists('$(tmp)')">$(tmp)</IronSchemeBuildAssemblyFile>
   </PropertyGroup>
