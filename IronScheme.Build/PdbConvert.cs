@@ -14,6 +14,8 @@ namespace IronScheme.Build
         [Required]
         public string DebugType { get; set; }
 
+        bool IncludeSource { get; set; }
+
         [Output]
         public ITaskItem Output { get; set; }
 
@@ -49,7 +51,7 @@ namespace IronScheme.Build
             return true;
 
 
-            ISymbolWriterProvider GetWriterProvider()
+            ISymbolWriterProvider GetWriterProvider(bool embedSource = false)
             {
                 switch (DebugType.ToLowerInvariant())
                 {
@@ -59,9 +61,9 @@ namespace IronScheme.Build
                     case "windows":
                         return new NativePdbWriterProvider();
                     case "portable":
-                        return new PortablePdbWriterProvider();
+                        return new PortablePdbWriterProvider(embedSource);
                     case "embedded":
-                        return new EmbeddedPortablePdbWriterProvider();
+                        return new EmbeddedPortablePdbWriterProvider(embedSource);
                     default:
                         return null;
                 }
