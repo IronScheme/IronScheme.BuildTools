@@ -1,0 +1,152 @@
+<Project>
+<!--  <Import Project="$(MSBuildThisFileDirectory)IronScheme.Build.tasks" />-->
+
+  <ItemDefinitionGroup>
+    <AllOutput>
+      <PalAssembly>%(Identity)IronScheme.FrameworkPAL.dll</PalAssembly>
+    </AllOutput>
+  </ItemDefinitionGroup>
+
+  <Target Name="Package" Condition="$(MSBuildProjectName) == 'IronScheme.Console'">
+    <Message Importance="High" Text="Lets start packaging: $(MSBuildProjectName)"/>
+
+    <PropertyGroup>
+      <_OutDir>$(MSBuildProjectDirectory)\$(OutputPath)</_OutDir>
+      <Net20OutputDir>$(_OutDir)net20\</Net20OutputDir>
+      <Core21OutputDir>$(_OutDir)netcoreapp2.1\</Core21OutputDir>
+      <Net90OutputDir>$(_OutDir)net9.0\</Net90OutputDir>
+      <Monolith>$(Net20OutputDir)IronScheme.dll</Monolith>
+      <ConsoleExeTemplate>$(Net20OutputDir)IronScheme.Console</ConsoleExeTemplate>
+      <IsOsUnixLike>$([MSBuild]::IsOsUnixLike())</IsOsUnixLike>
+      <MergeDir>$(Net20OutputDir)merged\</MergeDir>
+      <FinalDir>$([MSBuild]::GetDirectoryNameOfFileAbove($(MSBuildProjectDirectory), 'IronSchemeCore.sln'))\bin\</FinalDir>
+    </PropertyGroup>
+
+    <PropertyGroup Condition="$(IsOsUnixLike) == 'True'">
+      <BootstrapDir>$(Net90OutputDir)</BootstrapDir>
+      <IronScheme>$(BootstrapDir)IronScheme.ConsoleCore</IronScheme>
+    </PropertyGroup>
+
+    <PropertyGroup Condition="$(IsOsUnixLike) != 'True'">
+      <BootstrapDir>$(Net20OutputDir)</BootstrapDir>
+      <IronScheme>$(BootstrapDir)IronScheme.Console.exe</IronScheme>
+    </PropertyGroup>
+
+    <Exec Command="$(IronScheme) -debug ironscheme-buildscript.sps" WorkingDirectory="$(BootstrapDir)" StandardErrorImportance="Normal" StandardOutputImportance="Normal" />
+    <Exec Command="echo '1' | $(IronScheme) -debug" WorkingDirectory="$(BootstrapDir)" StandardOutputImportance="Normal" />
+
+    <Copy Condition="$(IsOsUnixLike) == 'True'" SourceFiles="$(BootstrapDir)ironscheme.boot.*" DestinationFolder="$(Net20OutputDir)" />
+
+    <Message Importance="High" Text="Bootstrapping completed"/>
+
+    <ItemGroup>
+      <AllOutput Include="$(Net20OutputDir);$(Core21OutputDir);$(Net90OutputDir)" />
+      <PalRename Include="@(AllOutput)" Source="Microsoft" TargetNS="IronScheme" />
+    </ItemGroup>
+
+    <ReferenceRemover Input="%(AllOutput.PalAssembly)" Include="IronScheme\.Scripting" Target="$(Monolith)" />
+    <NamespaceRenamer Input="%(AllOutput.PalAssembly)" References="true" Renames="@(PalRename)" />
+
+    <ILRepack Output="$(Net90OutputDir)net9-IronScheme.FrameworkPAL.dll" Input="$(Net90OutputDir)IronScheme.FrameworkPAL.dll;$(Net90OutputDir)System.Runtime.Serialization.Formatters.dll" />
+
+    <ItemGroup>
+      <Embeds Condition="$(IsOsUnixLike) != 'True'" Include="$(Net20OutputDir)IronScheme.FrameworkPAL.dll" />
+      <Embeds Condition="$(IsOsUnixLike) != 'True'" Include="$(Core21OutputDir)IronScheme.FrameworkPAL.dll" Name="core-IronScheme.FrameworkPAL.dll" />
+      <Embeds Include="$(Net90OutputDir)net9-IronScheme.FrameworkPAL.dll" />
+    </ItemGroup>
+
+    <EmbedResources Input="$(Monolith)" Resources="@(Embeds)" />
+
+    <Message Importance="High" Text="PAL's combined"/>
+
+    <ItemGroup>
+      <MonolithInput Include="$(Monolith);$(Net20OutputDir)IronScheme.Closures.dll;$(Net20OutputDir)IronScheme.Scripting.dll;$(Net20OutputDir)Oyster.IntX.dll;$(Net20OutputDir)ironscheme.boot.dll" />
+    </ItemGroup>
+
+    <RemoveDir Directories="$(MergeDir)" />
+    <MakeDir Directories="$(MergeDir)" />
+
+    <!--<PdbConvert Condition="Exists(%(MonolithInput.Identity))" Input="%(MonolithInput.Identity)" DebugType="portable" />-->
+
+    <ILRepack Output="$(MergeDir)IronScheme.dll" Input="@(MonolithInput)" />
+    <Copy SourceFolders="$(MergeDir)" DestinationFolder="$(Net20OutputDir)" />
+
+    <ItemGroup>
+      <FinalRename Include="1" Source="Microsoft" TargetNS="IronScheme" />
+      <FinalRename Include="2" Source="Oyster.Math" TargetNS="IronScheme.Scripting.Math" />
+      <FinalRename Include="3" Source="gppg" TargetNS="IronScheme.gppg" />
+    </ItemGroup>
+
+    <NamespaceRenamer Input="$(Monolith)" Renames="@(FinalRename)" />
+
+    <ReferenceRemover Input="$(Core21OutputDir)IronScheme.ConsoleCore.dll" Include="IronScheme\.Closures" Target="$(Monolith)" />
+    <ReferenceRemover Input="$(Net90OutputDir)IronScheme.ConsoleCore.dll" Include="IronScheme\.Closures" Target="$(Monolith)" />
+
+    <PdbConvert Input="$(Monolith)" Output="$(Monolith).portable.dll" DebugType="portable" />
+    <PdbConvert Input="$(Monolith)" Output="$(Monolith).embedded.dll" DebugType="embedded" />
+    <PdbConvert Input="$(Monolith).portable.dll" Output="$(Monolith).roundtrip.dll" DebugType="windows" ContinueOnError="true" />
+
+    <RuntimeChanger Input="$(ConsoleExeTemplate).exe" Output="$(ConsoleExeTemplate)32-v2.exe" Required32Bit="true" />
+    <RuntimeChanger Input="$(ConsoleExeTemplate).exe" Output="$(ConsoleExeTemplate)32-v4.exe" TargetRuntime="v4" Required32Bit="true" />
+    <RuntimeChanger Input="$(ConsoleExeTemplate).exe" Output="$(ConsoleExeTemplate)-v2.exe" />
+    <RuntimeChanger Input="$(ConsoleExeTemplate).exe" Output="$(ConsoleExeTemplate)-v4.exe" TargetRuntime="v4"/>
+
+    <Message Importance="High" Text="Assemblies combined"/>
+
+    <PropertyGroup>
+      <InstallStagePre>$(Net20OutputDir)install-stage\</InstallStagePre>
+      <InstallStage>$(InstallStagePre)IronScheme\</InstallStage>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <InstallFiles Condition="$(IsOsUnixLike) != 'True'" Include="$(ConsoleExeTemplate)32-v2.exe;$(ConsoleExeTemplate)32-v4.exe;$(ConsoleExeTemplate)-v2.exe;$(ConsoleExeTemplate)-v4.exe"/>
+      <InstallFiles Condition="$(IsOsUnixLike) == 'True'" Include="$(Net90OutputDir)IronScheme.ConsoleCore.dll;$(Net90OutputDir)IronScheme.ConsoleCore.runtimeconfig.json"/>
+      <InstallFiles Condition="$(IsOsUnixLike) != 'True'" Include="$(Core21OutputDir)IronScheme.ConsoleCore.dll;$(Core21OutputDir)IronScheme.ConsoleCore.runtimeconfig.json"/>
+      <InstallFiles Condition="$(IsOsUnixLike) == 'True'" Include="$(Net90OutputDir)IronScheme.ConsoleCore" />
+      <InstallFiles Condition="$(IsOsUnixLike) != 'True'" Include="$(Net90OutputDir)IronScheme.ConsoleCore.exe" />
+      <InstallFiles Include="$(Net20OutputDir)system-libraries*.ss" />
+      <InstallFiles Include="$(Monolith)" />
+    </ItemGroup>
+
+    <RemoveDir Directories="$(InstallStage)" />
+    <MakeDir Directories="$(InstallStage)" />
+
+    <Copy SourceFiles="@(InstallFiles)" DestinationFolder="$(InstallStage)" />
+    <Copy SourceFolders="$(MSBuildProjectDirectory)\examples\" DestinationFolder="$(InstallStage)examples\" />
+    <Copy SourceFolders="$(MSBuildProjectDirectory)\docs\" DestinationFolder="$(InstallStage)docs\" />
+    <Copy SourceFolders="$(MSBuildProjectDirectory)\lib\" DestinationFolder="$(InstallStage)lib\" />
+    <Copy SourceFolders="$(MSBuildProjectDirectory)\tests\" DestinationFolder="$(InstallStage)tests\" />
+
+    <Copy Condition="$(IsOsUnixLike) != 'True'" ContinueOnError="true" SourceFiles="$(Net90OutputDir)linux-x64\IronScheme.ConsoleCore" DestinationFiles="$(InstallStage)IronScheme.ConsoleCore.linux-x64" />
+    <Copy Condition="$(IsOsUnixLike) != 'True'" ContinueOnError="true" SourceFiles="$(Net90OutputDir)osx-x64\IronScheme.ConsoleCore" DestinationFiles="$(InstallStage)IronScheme.ConsoleCore.osx-x64" />
+
+    <ItemGroup>
+      <Deleteme Include="$(InstallStage)lib\minikanren\mktests.scm" />
+      <Deleteme Include="$(InstallStage)lib\pfds\tests.scm" />
+      <Deleteme Include="$(InstallStage)tests\*.sps" />
+      <Deleteme Include="$(InstallStage)lib\wak\fmt\private\test*.scm" />
+      <Deleteme Include="$(InstallStage)lib\wak\foof-loop\private\test-foof-loop.scm" />
+      <Deleteme Include="$(InstallStage)IronScheme.ConsoleCore.pdb" />
+      <DeleteDir Include="$(InstallStage)lib\srfi\.github" />
+      <DeleteDir Include="$(InstallStage)lib\srfi\tests" />
+      <DeleteDir Include="$(InstallStage)docs\notes" />
+    </ItemGroup>
+
+    <Delete Files="@(Deleteme)" />
+    <RemoveDir Directories="@(DeleteDir)" />
+
+    <Message Importance="High" Text="Files staged"/>
+
+    <RemoveDir Directories="$(FinalDir)" />
+    <MakeDir Directories="$(FinalDir)" />
+
+    <ZipDirectory SourceDirectory="$(InstallStage)" Overwrite="True" DestinationFile="$(FinalDir)IronScheme-latest.zip" />
+
+    <Copy SourceFiles="$(Net20OutputDir)IronScheme.pdb" DestinationFolder="$(InstallStage)" />
+
+    <ZipDirectory SourceDirectory="$(InstallStage)" Overwrite="True" DestinationFile="$(FinalDir)IronScheme-latest-DEBUG.zip" />
+
+    <Message Importance="High" Text="Packaging done. Files are in: $(FinalDir)"/>
+
+  </Target>
+</Project>

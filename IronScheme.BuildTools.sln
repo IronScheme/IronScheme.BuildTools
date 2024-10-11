@@ -23,6 +23,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "build", "build", "{241DF318
 		build\IronScheme.Build.props = build\IronScheme.Build.props
 		build\IronScheme.Build.targets = build\IronScheme.Build.targets
 		build\IronScheme.Build.tasks = build\IronScheme.Build.tasks
+		build\IronScheme.Package.targets = build\IronScheme.Package.targets
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "cecil", "cecil", "{7209FB8D-DC9B-4312-BD7D-DC44ED8B37FD}"
@@ -30,6 +31,8 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mono.Cecil", "cecil\Mono.Cecil.csproj", "{AC3317A7-6B76-410F-B217-72AD34327734}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mono.Cecil.Pdb", "cecil\symbols\pdb\Mono.Cecil.Pdb.csproj", "{E2986C3E-30FD-438C-BABA-281BDE2D4D18}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "gp", "gp", "{8CC1F055-1B53-4727-A80E-D179B3EACE5D}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -66,6 +69,8 @@ Global
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
+		{8C649193-B650-4DE9-A806-FA04F821B6D1} = {8CC1F055-1B53-4727-A80E-D179B3EACE5D}
+		{A186DD97-C254-40F9-A8D8-36832CA317F2} = {8CC1F055-1B53-4727-A80E-D179B3EACE5D}
 		{AC3317A7-6B76-410F-B217-72AD34327734} = {7209FB8D-DC9B-4312-BD7D-DC44ED8B37FD}
 		{E2986C3E-30FD-438C-BABA-281BDE2D4D18} = {7209FB8D-DC9B-4312-BD7D-DC44ED8B37FD}
 	EndGlobalSection
