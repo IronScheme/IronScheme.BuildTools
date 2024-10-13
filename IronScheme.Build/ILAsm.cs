@@ -125,6 +125,7 @@ Default source file extension is .il
             commandLine.AppendSwitch("-nologo");
             commandLine.AppendSwitch("-dll");
             commandLine.AppendSwitch("-quiet");
+            commandLine.AppendSwitch("-pdb");
 
             commandLine.AppendSwitchIfNotNull("-mdv=", MetadataVersion);
 
