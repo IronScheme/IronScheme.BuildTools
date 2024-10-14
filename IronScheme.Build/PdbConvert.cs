@@ -43,7 +43,7 @@ namespace IronScheme.Build
 
             var symwriter = GetWriterProvider();
 
-            LogMessage("Target symbol reader: {0}", symwriter?.GetType().Name ?? "None");
+            LogMessage("Target symbol writer: {0}", symwriter?.GetType().Name ?? "None");
 
             LogMessage("Saving assembly: {0}", output);
             ass.Write(output, new WriterParameters { WriteSymbols = hasPdb, SymbolWriterProvider = symwriter});

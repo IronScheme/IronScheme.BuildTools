@@ -67,7 +67,7 @@
     <RemoveDir Directories="$(MergeDir)" />
     <MakeDir Directories="$(MergeDir)" />
 
-    <!--<PdbConvert Condition="Exists(%(MonolithInput.Identity))" Input="%(MonolithInput.Identity)" DebugType="portable" />-->
+    <PdbConvert Condition="$(IsOsUnixLike) != 'True' and Exists('$(Net20OutputDir)ironscheme.boot.dll')" Input="$(Net20OutputDir)ironscheme.boot.dll" DebugType="portable" />
 
     <ILRepack Output="$(MergeDir)IronScheme.dll" Input="@(MonolithInput)" />
     <Copy SourceFolders="$(MergeDir)" DestinationFolder="$(Net20OutputDir)" />
@@ -83,9 +83,11 @@
     <ReferenceRemover Input="$(Core21OutputDir)IronScheme.ConsoleCore.dll" Include="IronScheme\.Closures" Target="$(Monolith)" />
     <ReferenceRemover Input="$(Net90OutputDir)IronScheme.ConsoleCore.dll" Include="IronScheme\.Closures" Target="$(Monolith)" />
 
-    <PdbConvert Input="$(Monolith)" Output="$(Monolith).portable.dll" DebugType="portable" />
+<!--    <PdbConvert Input="$(Monolith)" Output="$(Monolith).portable.dll" DebugType="portable" />
     <PdbConvert Input="$(Monolith)" Output="$(Monolith).embedded.dll" DebugType="embedded" />
-    <PdbConvert Condition="$(IsOsUnixLike) != 'True'" Input="$(Monolith).portable.dll" Output="$(Monolith).roundtrip.dll" DebugType="windows" />
+    <PdbConvert Condition="$(IsOsUnixLike) != 'True'" Input="$(Monolith).portable.dll" Output="$(Monolith).roundtrip.dll" DebugType="windows" />-->
+
+    <PdbConvert Input="$(Monolith)" DebugType="embedded" />
 
     <RuntimeChanger Input="$(ConsoleExeTemplate).exe" Output="$(ConsoleExeTemplate)32-v2.exe" Required32Bit="true" />
     <RuntimeChanger Input="$(ConsoleExeTemplate).exe" Output="$(ConsoleExeTemplate)32-v4.exe" TargetRuntime="v4" Required32Bit="true" />
@@ -142,10 +144,6 @@
     <MakeDir Directories="$(FinalDir)" />
 
     <ZipDirectory SourceDirectory="$(InstallStage)" Overwrite="True" DestinationFile="$(FinalDir)IronScheme-latest.zip" />
-
-    <Copy Condition="$(IsOsUnixLike) != 'True'" SourceFiles="$(Net20OutputDir)IronScheme.pdb" DestinationFolder="$(InstallStage)" />
-
-    <ZipDirectory Condition="$(IsOsUnixLike) != 'True'" SourceDirectory="$(InstallStage)" Overwrite="True" DestinationFile="$(FinalDir)IronScheme-latest-DEBUG.zip" />
 
     <Message Importance="High" Text="Packaging done. Files are in: $(FinalDir)"/>
 
