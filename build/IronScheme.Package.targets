@@ -132,6 +132,7 @@
       <Deleteme Include="$(InstallStage)IronScheme.ConsoleCore.pdb" />
       <DeleteDir Include="$(InstallStage)lib\srfi\.github" />
       <DeleteDir Include="$(InstallStage)lib\srfi\tests" />
+      <DeleteDir Include="$(InstallStage)lib\pfds\tests" />
       <DeleteDir Include="$(InstallStage)docs\notes" />
     </ItemGroup>
 
