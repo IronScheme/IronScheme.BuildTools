@@ -129,6 +129,7 @@
       <Deleteme Include="$(InstallStage)tests\*.sps" />
       <Deleteme Include="$(InstallStage)lib\wak\fmt\private\test*.scm" />
       <Deleteme Include="$(InstallStage)lib\wak\foof-loop\private\test-foof-loop.scm" />
+      <Deleteme Include="$(InstallStage)lib\pfds\runtests" />
       <Deleteme Include="$(InstallStage)IronScheme.ConsoleCore.pdb" />
       <DeleteDir Include="$(InstallStage)lib\srfi\.github" />
       <DeleteDir Include="$(InstallStage)lib\srfi\tests" />
