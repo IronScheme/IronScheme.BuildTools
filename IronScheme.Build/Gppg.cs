@@ -65,6 +65,7 @@ Usage gppg [options] filename
             var commandLine = new CommandLineBuilderExtension();
 
             commandLine.AppendSwitchIfNotNull("/out:", OutputFile);
+            commandLine.AppendSwitchIfNotNull("/line-filename:", Path.GetFileName(InputFile.ItemSpec));
 
             if (Gplex) commandLine.AppendSwitch("/gplex");
             if (NoLines) commandLine.AppendSwitch("/no-lines");
