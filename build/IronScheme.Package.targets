@@ -120,8 +120,8 @@
     <Copy SourceFolders="$(MSBuildProjectDirectory)\lib\" DestinationFolder="$(InstallStage)lib\" />
     <Copy SourceFolders="$(MSBuildProjectDirectory)\tests\" DestinationFolder="$(InstallStage)tests\" />
 
-    <Copy Condition="$(IsOsUnixLike) != 'True'" ContinueOnError="true" SourceFiles="$(Net90OutputDir)linux-x64\IronScheme.ConsoleCore" DestinationFiles="$(InstallStage)IronScheme.ConsoleCore.linux-x64" />
-    <Copy Condition="$(IsOsUnixLike) != 'True'" ContinueOnError="true" SourceFiles="$(Net90OutputDir)osx-x64\IronScheme.ConsoleCore" DestinationFiles="$(InstallStage)IronScheme.ConsoleCore.osx-x64" />
+    <Copy Condition="Exists('$(Net90OutputDir)linux-x64\IronScheme.ConsoleCore')" ContinueOnError="true" SourceFiles="$(Net90OutputDir)linux-x64\IronScheme.ConsoleCore" DestinationFiles="$(InstallStage)IronScheme.ConsoleCore.linux-x64" />
+    <Copy Condition="Exists('$(Net90OutputDir)osx-x64\IronScheme.ConsoleCore')" ContinueOnError="true" SourceFiles="$(Net90OutputDir)osx-x64\IronScheme.ConsoleCore" DestinationFiles="$(InstallStage)IronScheme.ConsoleCore.osx-x64" />
 
     <ItemGroup>
       <Deleteme Include="$(InstallStage)lib\minikanren\mktests.scm" />
