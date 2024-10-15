@@ -108,6 +108,7 @@
       <InstallFiles Condition="$(IsOsUnixLike) == 'True'" Include="$(Net90OutputDir)IronScheme.ConsoleCore" />
       <InstallFiles Condition="$(IsOsUnixLike) != 'True'" Include="$(Net90OutputDir)IronScheme.ConsoleCore.exe" />
       <InstallFiles Include="$(Net20OutputDir)system-libraries*.ss" />
+      <InstallFiles Include="$(Net20OutputDir)nuget.sls" />
       <InstallFiles Include="$(Monolith)" />
     </ItemGroup>
 
