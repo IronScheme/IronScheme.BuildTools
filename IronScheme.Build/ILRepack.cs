@@ -85,6 +85,8 @@ Note: for compatibility purposes, all Options are case insensitive, and can be s
         [Required]
         public ITaskItem Output { get; set; }
 
+        public bool Parallel { get; set; }
+
         protected override string ToolName => "ilrepack";
 
         protected override string GenerateFullPathToTool()
@@ -98,9 +100,11 @@ Note: for compatibility purposes, all Options are case insensitive, and can be s
 
             commandLine.AppendSwitchIfNotNull("-out:", Output);
             commandLine.AppendSwitch("-noRepackRes");
-            commandLine.AppendSwitch("-parallel");
 
-            //commandLine.AppendSwitch("-verbose");
+            if (Parallel)
+            {
+                commandLine.AppendSwitch("-parallel");
+            }
 
             foreach (var input in Input)
             {
