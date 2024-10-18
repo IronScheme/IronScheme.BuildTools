@@ -32,6 +32,8 @@
       <IronScheme>$(BootstrapDir)IronScheme.Console.exe</IronScheme>
     </PropertyGroup>
 
+    <!-- twice so any new code will take effect -->
+    <Exec Command="$(IronScheme) -debug ironscheme-buildscript.sps" WorkingDirectory="$(BootstrapDir)" StandardErrorImportance="Normal" StandardOutputImportance="Normal" />
     <Exec Command="$(IronScheme) -debug ironscheme-buildscript.sps" WorkingDirectory="$(BootstrapDir)" StandardErrorImportance="Normal" StandardOutputImportance="Normal" />
     <Exec Command="echo '1' | $(IronScheme) -debug" WorkingDirectory="$(BootstrapDir)" StandardOutputImportance="Normal" />
 
@@ -55,6 +57,8 @@
       <Embeds Condition="$(IsOsUnixLike) != 'True'" Include="$(Core21OutputDir)IronScheme.FrameworkPAL.dll" Name="core-IronScheme.FrameworkPAL.dll" />
       <Embeds Include="$(Net90OutputDir)net9-IronScheme.FrameworkPAL.dll" />
     </ItemGroup>
+
+    <PdbConvert Input="%(Embeds.Identity)" DebugType="embedded" />
 
     <EmbedResources Input="$(Monolith)" Resources="@(Embeds)" />
 
