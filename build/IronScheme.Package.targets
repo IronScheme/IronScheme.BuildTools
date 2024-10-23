@@ -33,8 +33,8 @@
     </PropertyGroup>
 
     <!-- twice so any new code will take effect -->
-    <Exec Command="$(IronScheme) -debug ironscheme-buildscript.sps" WorkingDirectory="$(BootstrapDir)" StandardErrorImportance="Normal" StandardOutputImportance="Normal" />
-    <Exec Command="$(IronScheme) -debug ironscheme-buildscript.sps" WorkingDirectory="$(BootstrapDir)" StandardErrorImportance="Normal" StandardOutputImportance="Normal" />
+    <Exec Command="$(IronScheme) -debug ironscheme-buildscript.sps" WorkingDirectory="$(BootstrapDir)" StandardErrorImportance="High" StandardOutputImportance="High" />
+    <Exec Command="$(IronScheme) -debug ironscheme-buildscript.sps" WorkingDirectory="$(BootstrapDir)" StandardErrorImportance="High" StandardOutputImportance="High" />
     <Exec Command="echo '1' | $(IronScheme) -debug" WorkingDirectory="$(BootstrapDir)" StandardOutputImportance="Normal" />
 
     <Copy Condition="$(IsOsUnixLike) == 'True'" SourceFiles="$(BootstrapDir)ironscheme.boot.dll" DestinationFolder="$(Net20OutputDir)" />
